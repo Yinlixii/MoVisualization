@@ -9,6 +9,7 @@ $.get('data/file.json', function (bike) {
      var value = 0;
      var xspan = 0;
      var yspan = 0;
+     var value = [1];
      var x = new Array();
      var y = new Array();
      var xmax = data[0].x;
@@ -16,46 +17,20 @@ $.get('data/file.json', function (bike) {
      var ymax = data[0].y;
      var ymin = data[0].y;
      for (var i = 0; i < data.length; i++) {
-/*     x[0] = parseFloat(data[i].x);
+     x[0] = parseFloat(data[i].x);
      y[0] = parseFloat(data[i].y);
             res.push({
                 name: data[i].name,
-                value: x.concat(y)
-            });*/
-     if(data[i].x > xmax)
-          xmax = data[i].x;
-     if(data[i].x < xmin)
-          xmin = data[i].x;
-     if(data[i].y > ymax)
-          ymax = data[i].y;
-     if(data[i].y < ymin)
-          ymin = data[i].y;
+                value: x.concat(y).concat(value)
+            });
         }
 
-     xspan = (xmax - xmin) / 300;
-     yspan = (ymax - ymin) / 300;
-     var value = new Array(90000).fill(0);
-     for (var i = 0; i < data.length; i++){
-          value[Math.floor(parseFloat(data[i].x - xmin) / xspan) + Math.floor(parseFloat(data[i].y - ymin) / yspan) * 300]++;
-     }
-     for (var y = 0; y < 300; y++){
-               for(var x = 0; x < 300; x++){
-                    var geoCoordx = [Number(xmin) + Number(x * xspan)];
-                    var geoCoordy = [Number(ymin) + Number(y * yspan)];
-                    res.push({
-                         name:x + 300 * y,
-                         value: geoCoordx.concat(geoCoordy).concat(value[x + 300 * y])
-          })  
-          }
-          }
-     /*console.log(Math.floor(parseFloat(data[22222].x - xmin) / xspan) + Math.floor(parseFloat(data[22222].y - ymin) / yspan) * 100)
-     console.log(value[9021]);*/
-     console.log(xspan,xmin);
+
     return res;
 };
 var option = {
         bmap: {
-        center: [121.00,31.00],
+        center: [121.50,31.20],
         zoom: 12,
         roam: true,
         mapStyle: {
@@ -578,7 +553,7 @@ var option = {
             show: false,
             top: 'top',
             min: 0,
-            max: 1000,
+            max: 35,
             seriesIndex: 0,
             calculable: true,
             inRange: {
@@ -591,7 +566,8 @@ var option = {
             type: 'heatmap',
             coordinateSystem: 'bmap',
             data: convertData(data),
-            symbolSize: 5,
+            pointSize: 5,
+            blurSize: 6,
             label: {
                 normal: {
                     formatter: '{b}',
